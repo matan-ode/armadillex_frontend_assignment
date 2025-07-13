@@ -4,9 +4,8 @@
       <h1>Companies</h1>
     </q-card-section>
     <q-card-section>
-      <pre>
-        <CompanyList :companies="companies"/>
-      </pre>
+        <CompanyList v-if="companies" :companies="companies"/>
+        <p v-else>Loading...</p>
     </q-card-section>
   </q-card>
 </template>
