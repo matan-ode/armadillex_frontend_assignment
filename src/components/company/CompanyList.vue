@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-table flat bordered title="Companies" :rows="rows" :columns="columns" row-key="id" :filter="filter"
+    <q-table @row-click="onRowClick" flat bordered title="Companies" :rows="rows" :columns="columns" row-key="id" :filter="filter"
       :loading="loading">
       <template v-slot:top>
         <q-btn color="primary" :disable="loading" label="Add row" @click="addRow" />
@@ -18,14 +18,11 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
-// import CompanyPreview from './CompanyPreview.vue'
+import { defineProps, ref } from 'vue'
 
 const props = defineProps({
   companies: Array
 })
-
-import { ref } from 'vue'
 
 const columns = [
   { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: false },
@@ -51,6 +48,13 @@ const originalRows = props.companies
 const loading = ref(false)
 const filter = ref('')
 const rows = ref([...originalRows])
+
+function onRowClick(ev, row){
+
+  console.log('clicked on', row, ev);
+
+}
+
 
 </script>
 
