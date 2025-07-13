@@ -1,33 +1,63 @@
 <template>
-  <table class="company-list">
-    <tr>
-      <td>ID</td>
-      <td>Is Active</td>
-      <td>Name</td>
-      <td>Legal Name</td>
-      <td>Country</td>
-      <td>Date Added</td>
-      <td>Is DPF Found</td>
-      <td>Parent ID</td>
-      <td>Provides AI Services</td>
-    </tr>
-      <tr v-for="company in companies" :key="company.id">
-        <CompanyPreview :company="company" />
-      </tr>
-  </table>
+  <div class="q-pa-md">
+    <q-table flat bordered title="Companies" :rows="rows" :columns="columns" row-key="id" :filter="filter"
+      :loading="loading">
+      <template v-slot:top>
+        <q-btn color="primary" :disable="loading" label="Add row" @click="addRow" />
+        <q-btn v-if="rows.length !== 0" class="q-ml-sm" color="primary" :disable="loading" label="Remove row"
+          @click="removeRow" />
+        <q-space />
+        <q-input borderless dense debounce="300" color="primary" v-model="filter">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
+    </q-table>
+  </div>
 </template>
 
 <script setup>
 import { defineProps } from 'vue'
-import CompanyPreview from './CompanyPreview.vue'
+// import CompanyPreview from './CompanyPreview.vue'
 
-defineProps({
+const props = defineProps({
   companies: Array
 })
 
+import { ref } from 'vue'
+
+const columns = [
+  { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: false },
+  {
+    name: 'name',
+    required: true,
+    label: 'Name',
+    align: 'left',
+    field: row => row.name,
+    sortable: true
+  },
+  { name: 'active', align: 'center', label: 'Is Active', field: row => row.active ? 'Yes' : 'No', sortable: true },
+  { name: 'country', align: 'center', label: 'Country', field: 'country', sortable: true },
+  { name: 'dateAdded', align: 'center', label: 'Date Added', field: 'dateAdded', sortable: true, },
+  { name: 'isDpfFound', align: 'center', label: 'is DPF Found', field: row => row.isDpfFound ? 'Yes' : 'No', sortable: true },
+  { name: 'providesAiServices', align: 'center', label: 'Provides AI Services', field: row => row.providesAiServices ? 'Yes' : 'No', sortable: true },
+  { name: 'parentId', align: 'center', label: 'Parent ID', field: row => row.parentId ? row.parentId : 'None' },
+  { name: 'legalName', align: 'center', label: 'Legal Name', field: 'legalName', sortable: true }
+]
+
+const originalRows = props.companies
+
+const loading = ref(false)
+const filter = ref('')
+const rows = ref([...originalRows])
+
 </script>
 
- <!-- "id": "pAuC6RQ71bBG",
+<style scoped lang="scss"></style>
+
+
+<!-- "id": "pAuC6RQ71bBG",
     "active": true,
     "name": "Market Data Insights LLC",
     "legalName": "Market Data Insights LLC",
