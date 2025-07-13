@@ -1,10 +1,33 @@
 <template>
-  <article class="company-preview">
-        <td>
-          {{ company.legalName }}
-          {{ company.country }}
-        </td>
-  </article>
+  <td>
+    {{ company.id }}
+  </td>
+  <td>
+    {{ company.active }}
+  </td>
+  <td>
+    {{ company.name }}
+  </td>
+  <td>
+    {{ company.legalName }}
+  </td>
+  <td>
+    {{ company.country }}
+  </td>
+  <td>
+    {{ company.dateAdded }}
+  </td>
+  <td>
+    {{ company.isDpfFound }}
+  </td>
+  <td>
+    {{ company.parentId }}
+  </td>
+  <td>
+    {{ company.providesAiServices }}
+  </td>
+
+
 </template>
 
 <script setup>
@@ -15,15 +38,4 @@ defineProps({
 
 </script>
 
-
-<!-- {
-  "id": "pAuC6RQ71bBG",
-  "active": true,
-  "name": "Market Data Insights LLC",
-  "legalName": "Market Data Insights LLC",
-  "country": "USA",
-  "dateAdded": "Sun, 26 Jan 2025 16:54:36 GMT",
-  "isDpfFound": false,
-  "parentId": "hDQkIp9PldZO",
-  "providesAiServices": true
-} -->
+<style scoped lang="scss"></style>
