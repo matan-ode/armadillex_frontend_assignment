@@ -1,11 +1,9 @@
 <template>
   <div class="q-pa-md">
-    <q-table @row-click="onRowClick" flat bordered title="Companies" :rows="rows" :columns="columns" row-key="id" :filter="filter"
-      :loading="loading">
+    <q-table @row-click="onRowClick" flat bordered title="Companies" :rows="rows" :columns="columns" row-key="id"
+      :filter="filter" :loading="loading">
       <template v-slot:top>
-        <q-btn color="primary" :disable="loading" label="Add row" @click="addRow" />
-        <q-btn v-if="rows.length !== 0" class="q-ml-sm" color="primary" :disable="loading" label="Remove row"
-          @click="removeRow" />
+        <q-btn color="primary" :disable="loading" label="Add Company" @click="addCompany" />
         <q-space />
         <q-input borderless dense debounce="300" color="primary" v-model="filter">
           <template v-slot:append>
@@ -49,11 +47,13 @@ const loading = ref(false)
 const filter = ref('')
 const rows = ref([...originalRows])
 
-function onRowClick(ev, row){
+
+function onRowClick(ev, row) {
 
   console.log('clicked on', row, ev);
 
 }
+
 
 
 </script>
