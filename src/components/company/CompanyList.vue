@@ -5,7 +5,7 @@
       <template v-slot:top>
         <q-btn color="primary" :disable="loading" label="Add Company" @click="addCompany" />
         <q-space />
-        <q-input borderless dense debounce="300" color="primary" v-model="filter">
+        <q-input borderless dense debounce="300" color="primary" placeholder="Search" v-model="filter">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
