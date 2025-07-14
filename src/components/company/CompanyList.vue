@@ -22,13 +22,13 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="aiName" autofocus @keyup.enter="prompt = false" />
+          <q-input dense v-model="aiName" autofocus @keyup.enter="aiGenerateNames" />
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
           <q-btn flat label="Cancel" v-close-popup />
           <!-- <q-btn flat label="Add address" v-close-popup /> -->
-          <q-btn v-close-popup color="primary" :disable="loading" label="AI Generator" @click="aiGenerateNames" />
+          <q-btn color="primary" :disable="loading" label="AI Generator" @click="aiGenerateNames" v-close-popup />
 
         </q-card-actions>
       </q-card>
@@ -77,9 +77,10 @@ function onRowClick(ev, row) {
 
 }
 
-function aiGenerateNames(){
-  console.log('WORKSSS');
-
+function aiGenerateNames() {
+  console.log('WORKSSS', aiName);
+  aiName.value = ''
+  prompt.value = false
 }
 
 
