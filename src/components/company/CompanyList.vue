@@ -1,4 +1,5 @@
 <template>
+
   <div class="q-pa-md">
     <q-table @row-click="onRowClick" flat bordered title="Companies" :rows="rows" :columns="columns" row-key="id"
       :filter="filter" :loading="loading">
@@ -38,7 +39,9 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue'
+import { defineProps, ref, onBeforeUnmount } from 'vue'
+import { useQuasar } from 'quasar'
+import { getRandomIntInclusive } from 'src/services/util.service'
 
 const props = defineProps({
   companies: Array
@@ -70,18 +73,61 @@ const filter = ref('')
 const rows = ref([...originalRows])
 const prompt = ref(false)
 const aiName = ref('')
+const aiSuggestions = ref([])
+
+const $q = useQuasar()
+let timer
 
 function onRowClick(ev, row) {
 
-  console.log('clicked on', row, ev);
+  console.log('clicked on row', row, ev);
 
 }
+
+onBeforeUnmount(() => {
+  // void 0 similar to undefined
+  if (timer !== void 0) {
+    clearTimeout(timer)
+    $q.loading.hide()
+  }
+})
 
 function aiGenerateNames() {
-  console.log('WORKSSS', aiName);
-  aiName.value = ''
+  makeAiSuggestions(aiName.value)
   prompt.value = false
+  aiName.value = ''
+  showLoading()
 }
+
+function showLoading() {
+  $q.loading.show({
+    message: 'Generating AI suggestions...',
+    boxClass: 'bg-grey-2 text-grey-9',
+    spinnerColor: 'primary'
+  })
+
+  // hiding in 3s
+  timer = setTimeout(() => {
+    $q.loading.hide()
+    timer = void 0
+    // TODO: Add here onFunc that preset modal of radio buttons with AI suggests.
+    
+  }, 3000)
+}
+
+function makeAiSuggestions(name) {
+  const nameEndings = ['Solutions', 'Group', 'International', 'Corp', 'Inc', 'LLC', 'Partners', 'Holdings', '& Son', '& Co', 'Ltd.', 'Brands']
+  const nameSuggestions = []
+  for (let i = 0; i < 3; i++) {
+    const randIdx = getRandomIntInclusive(0, nameEndings.length - 1)
+    nameSuggestions.push(name + ` ${nameEndings[randIdx]}`)
+    nameEndings.splice(randIdx, 1)
+  }
+
+  aiSuggestions.value = nameSuggestions
+}
+
+
 
 
 
