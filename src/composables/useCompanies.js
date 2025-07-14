@@ -23,6 +23,7 @@ export function useCompanies() {
     onSuccess: (data) => {
       console.log('addCompanyMutation SUCCESS! Created company:', data)
       queryClient.invalidateQueries([QUERY_KEYS.COMPANIES])
+      notifyService.success(notifyMsgs.companyAdded)
     },
     onError: (error) => {
       console.error('addCompanyMutation FAILED!', error)
