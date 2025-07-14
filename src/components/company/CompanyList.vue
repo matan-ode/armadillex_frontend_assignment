@@ -1,7 +1,7 @@
 <template>
 
   <div class="q-pa-md">
-    <q-table @row-click="onRowClick" flat bordered title="Companies" :rows="companies" :columns="columns" row-key="id"
+    <q-table class="table-company-list" @row-click="onRowClick" flat bordered title="Companies" :rows="companies" :columns="columns" row-key="id"
       :filter="filter" :loading="isLoading || isAddingCompany">
       <template v-slot:top>
         <q-btn label="Add a Company" color="primary" @click="prompt = true" />
@@ -233,4 +233,6 @@ function retryRadioDialog() {
 
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+
+</style>

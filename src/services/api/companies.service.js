@@ -20,13 +20,13 @@ function addCompany(newCompanyData) {
     setTimeout(() => {
       const rawNewCompany = {
         active: getRandomBoolean(),
-        company_id: makeId(8),
+        company_id: makeId(12),
         company_legal_name: newCompanyData.name,
         company_name: newCompanyData.name,
         country: 'USA',
         date_added: new Date().toUTCString(),
         dpf_found: getRandomBoolean(),
-        parent_id: makeId(8),
+        parent_id: makeId(12),
         provides_ai_services: getRandomBoolean(),
       }
 

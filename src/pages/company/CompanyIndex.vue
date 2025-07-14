@@ -4,7 +4,7 @@
       <h1>Companies</h1>
     </q-card-section>
     <q-card-section class="company-list">
-      <CompanyList v-if="companies" />
+      <CompanyList v-if="companies" :companies="companies" />
       <div class="loading" v-else><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150">
           <path fill="none" stroke="#002644" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385"
             stroke-dashoffset="0"
@@ -33,7 +33,7 @@ h1 {
 }
 
 .company-list {
-  min-height: 65vh;
+  min-height: 60vh;
   padding: 0;
 }
 
