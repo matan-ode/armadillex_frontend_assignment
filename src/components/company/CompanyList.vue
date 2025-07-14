@@ -15,11 +15,12 @@
     </q-table>
   </div>
 
+  <!-- Prompt / Modal -->
   <div class="q-pa-md q-gutter-sm">
     <q-dialog v-model="prompt" persistent>
       <q-card style="min-width: 350px">
         <q-card-section>
-          <div class="text-h6">Company Name:</div>
+          <div class="text-h6">Company Name</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -34,8 +35,34 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-  </div>
 
+    <!-- Radio Options -->
+    <q-dialog v-model="radioDialogVisible" persistent>
+      <q-card style="min-width: 350px">
+        <q-card-section class="q-pb-none">
+          <div class="text-h6">Choose an Option</div>
+        </q-card-section>
+
+        <q-card-section>
+          <q-list>
+            <q-item v-for="option in aiSuggestions" :key="option" tag="label" v-ripple>
+              <q-item-section avatar>
+                <q-radio v-model="selectedOption" :val="option" color="teal" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ option }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="negative" @click="cancelDialog" />
+          <q-btn flat label="OK" color="primary" @click="confirmDialog" :disable="!selectedOption" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+  </div>
 </template>
 
 <script setup>
@@ -73,7 +100,14 @@ const filter = ref('')
 const rows = ref([...originalRows])
 const prompt = ref(false)
 const aiName = ref('')
+
 const aiSuggestions = ref([])
+
+const radioDialogVisible = ref(false)
+const selectedOption = ref(null)
+const confirmedOption = ref(null);
+
+
 
 const $q = useQuasar()
 let timer
@@ -111,7 +145,7 @@ function showLoading() {
     $q.loading.hide()
     timer = void 0
     // TODO: Add here onFunc that preset modal of radio buttons with AI suggests.
-    
+    radioDialogVisible.value = true
   }, 3000)
 }
 
@@ -125,9 +159,20 @@ function makeAiSuggestions(name) {
   }
 
   aiSuggestions.value = nameSuggestions
+  console.log(aiSuggestions.value)
+
 }
 
 
+function confirmDialog() {
+  confirmedOption.value = selectedOption.value
+  radioDialogVisible.value = false // Close the dialog
+}
+
+function cancelDialog() {
+  selectedOption.value = null // Clear the selection
+  radioDialogVisible.value = false // Close the dialog
+}
 
 
 
