@@ -1,8 +1,8 @@
 <template>
 
   <div class="q-pa-md">
-    <q-table @row-click="onRowClick" flat bordered title="Companies" :rows="rows" :columns="columns" row-key="id"
-      :filter="filter" :loading="loading">
+    <q-table @row-click="onRowClick" flat bordered title="Companies" :rows="companies" :columns="columns" row-key="id"
+      :filter="filter" :loading="isLoading || isAddingCompany">
       <template v-slot:top>
         <q-btn label="Add a Company" color="primary" @click="prompt = true" />
         <q-space />
@@ -24,13 +24,13 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="aiName" autofocus @keyup.enter="aiGenerateNames" />
+          <q-input dense v-model="aiNameInput" autofocus @keyup.enter="aiGenerateNames" />
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
           <q-btn flat label="Cancel" v-close-popup />
           <!-- <q-btn flat label="Add address" v-close-popup /> -->
-          <q-btn color="primary" :disable="loading" label="AI Generator" @click="aiGenerateNames" v-close-popup />
+          <q-btn color="primary" :disable="isLoadingAI" label="AI Generator" @click="aiGenerateNames" v-close-popup />
 
         </q-card-actions>
       </q-card>
@@ -40,7 +40,7 @@
     <q-dialog v-model="radioDialogVisible" persistent>
       <q-card style="min-width: 350px">
         <q-card-section class="q-pb-none">
-          <div class="text-h6">Choose an Option</div>
+          <div class="text-h6">Choose an AI Option</div>
         </q-card-section>
 
         <q-card-section>
@@ -57,8 +57,9 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="negative" @click="cancelDialog" />
-          <q-btn flat label="OK" color="primary" @click="confirmDialog" :disable="!selectedOption" />
+          <q-btn flat label="Retry" color="negative" @click="retryRadioDialog" />
+          <q-btn flat label="Skip" color="primary" @click="skipRadioDialog" />
+          <q-btn flat label="OK" color="primary" @click="confirmRadioDialog" :disable="!selectedOption" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -66,13 +67,49 @@
 </template>
 
 <script setup>
-import { defineProps, ref, onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { getRandomIntInclusive } from 'src/services/util.service'
+import { useCompanies } from 'src/composables/useCompanies'
 
-const props = defineProps({
-  companies: Array
-})
+
+
+const { companies, isLoading, error, addCompany, isAddingCompany } = useCompanies()
+
+async function onAddCompany(companyName) {
+
+  try {
+    const newCompanyData = {
+      name: companyName,
+      active: true,
+      country: 'Unknown',
+      legalName: companyName,
+      providesAiServices: false,
+
+    }
+
+    await addCompany(newCompanyData)
+
+    $q.notify({
+      type: 'positive',
+      message: 'Company added successfully!',
+      position: 'top',
+    })
+
+    aiNameInput.value = ''
+    prompt.value = false
+    radioDialogVisible.value = false
+    selectedOption.value = null
+
+  } catch (err) {
+    console.error('Failed to add company:', err);
+    $q.notify({
+      type: 'negative',
+      message: `Failed to add company: ${err.message || 'Unknown error'}`,
+      position: 'top',
+    });
+  }
+}
 
 const columns = [
   { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: false },
@@ -93,20 +130,16 @@ const columns = [
   { name: 'legalName', align: 'center', label: 'Legal Name', field: 'legalName', sortable: true }
 ]
 
-const originalRows = props.companies
 
-const loading = ref(false)
+const isLoadingAI = ref(false)
 const filter = ref('')
-const rows = ref([...originalRows])
 const prompt = ref(false)
-const aiName = ref('')
+const aiNameInput = ref('')
 
 const aiSuggestions = ref([])
 
 const radioDialogVisible = ref(false)
 const selectedOption = ref(null)
-const confirmedOption = ref(null);
-
 
 
 const $q = useQuasar()
@@ -126,11 +159,38 @@ onBeforeUnmount(() => {
   }
 })
 
+watch(isLoading, (newVal, oldVal) => {
+  if (!newVal && oldVal) { // Finished loading
+    if (error.value) {
+      $q.notify({
+        type: 'negative',
+        message: `Failed to load companies: ${error.value.message || 'Unknown error'}`,
+        position: 'top'
+      })
+    } else if (companies.value?.length > 0) {
+      $q.notify({
+        type: 'positive',
+        message: 'Companies loaded successfully!',
+        position: 'top'
+      })
+    }
+  }
+}, { immediate: true })
+
+
 function aiGenerateNames() {
-  makeAiSuggestions(aiName.value)
+  isLoadingAI.value = true
   prompt.value = false
-  aiName.value = ''
+  makeAiSuggestions(aiNameInput.value)
+
   showLoading()
+
+  timer = setTimeout(() => {
+    $q.loading.hide()
+    isLoadingAI.value = false
+    timer = void 0
+    radioDialogVisible.value = true
+  }, 3000)
 }
 
 function showLoading() {
@@ -139,14 +199,6 @@ function showLoading() {
     boxClass: 'bg-grey-2 text-grey-9',
     spinnerColor: 'primary'
   })
-
-  // hiding in 3s
-  timer = setTimeout(() => {
-    $q.loading.hide()
-    timer = void 0
-    // TODO: Add here onFunc that preset modal of radio buttons with AI suggests.
-    radioDialogVisible.value = true
-  }, 3000)
 }
 
 function makeAiSuggestions(name) {
@@ -160,33 +212,25 @@ function makeAiSuggestions(name) {
 
   aiSuggestions.value = nameSuggestions
   console.log(aiSuggestions.value)
-
 }
 
-
-function confirmDialog() {
-  confirmedOption.value = selectedOption.value
-  radioDialogVisible.value = false // Close the dialog
+function confirmRadioDialog() {
+  if (selectedOption.value) {
+    onAddCompany(selectedOption.value)
+  }
 }
 
-function cancelDialog() {
-  selectedOption.value = null // Clear the selection
-  radioDialogVisible.value = false // Close the dialog
+function skipRadioDialog() {
+  onAddCompany(aiNameInput.value)
 }
 
+function retryRadioDialog() {
+  selectedOption.value = null
+  radioDialogVisible.value = false
+  aiGenerateNames()
+}
 
 
 </script>
 
 <style scoped lang="scss"></style>
-
-
-<!-- "id": "pAuC6RQ71bBG",
-    "active": true,
-    "name": "Market Data Insights LLC",
-    "legalName": "Market Data Insights LLC",
-    "country": "USA",
-    "dateAdded": "Sun, 26 Jan 2025 16:54:36 GMT",
-    "isDpfFound": false,
-    "parentId": "hDQkIp9PldZO",
-    "providesAiServices": true -->

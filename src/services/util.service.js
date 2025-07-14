@@ -57,3 +57,18 @@ export function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled)
   // The maximum is inclusive and the minimum is inclusive
 }
+
+export function makeId(l) {
+  var text = ''
+  var char_list = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  for (var i = 0; i < l; i++) {
+    text += char_list.charAt(Math.floor(Math.random() * char_list.length))
+  }
+  return text
+}
+
+export function getRandomBoolean() {
+  // Math.random() generates a floating-point number between 0 (inclusive) and 1 (exclusive).
+  // If the number is less than 0.5, it returns true; otherwise, it returns false.
+  return Math.random() < 0.5
+}

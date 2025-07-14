@@ -1,6 +1,8 @@
+import { getRandomBoolean, makeId } from '../util.service'
 
 export const companiesService = {
   getCompanies,
+  addCompany,
 }
 
 async function getCompanies() {
@@ -9,6 +11,29 @@ async function getCompanies() {
     setTimeout(() => {
       resolve(_refactorCompanies(companies))
     }, 1000)
+  })
+}
+
+function addCompany(newCompanyData) {
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const rawNewCompany = {
+        active: getRandomBoolean(),
+        company_id: makeId(8),
+        company_legal_name: newCompanyData.name,
+        company_name: newCompanyData.name,
+        country: 'USA',
+        date_added: new Date().toUTCString(),
+        dpf_found: getRandomBoolean(),
+        parent_id: makeId(8),
+        provides_ai_services: getRandomBoolean(),
+      }
+
+      demoCompanies.unshift(rawNewCompany)
+
+      resolve(_refactorCompanies([rawNewCompany])[0])
+    }, 700)
   })
 }
 
