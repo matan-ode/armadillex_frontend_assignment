@@ -1,16 +1,16 @@
 <template>
   <div class="q-pa-md">
     <h3>Company Info</h3>
-    <p> <strong>ID:</strong> {{ companyId }}</p>
 
     <p v-if="isLoadingCompany">Loading...</p>
     <p v-else-if="errorCompany">Error: {{ errorCompany.message }}</p>
     <p v-else-if="companyDetails">
+      <strong>ID:</strong> {{ companyId }} <br>
       <strong>Company Name:</strong> {{ companyDetails.name }} <br>
       <strong>Address</strong>: {{ companyDetails.country }} <br>
       <strong>Active</strong>: {{ companyDetails.active ? 'Yes' : 'No' }} <br>
-      <strong>Date Added:</strong>  {{ companyDetails.dateAdded }} <br>
-      <strong>AI Services:</strong>  {{ companyDetails.providesAiServices ? 'Yes' : 'לא' }}
+      <strong>Date Added:</strong> {{ companyDetails.dateAdded }} <br>
+      <strong>AI Services:</strong> {{ companyDetails.providesAiServices ? 'Yes' : 'לא' }}
     </p>
     <p v-else-if="!isLoadingCompany && !errorCompany && companyDetails === null">ID: {{ companyId }} Not Found</p>
     <p v-else>Loading...</p>
