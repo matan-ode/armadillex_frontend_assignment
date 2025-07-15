@@ -30,6 +30,18 @@ export function useCompanies() {
     },
   })
 
+  const useCompanyById = (id) => {
+    return useQuery({
+      queryKey: [QUERY_KEYS.COMPANIES, id],
+      queryFn: () => companiesService.getCompany(id),
+      enabled: !!id,
+      initialData: () => {
+        const allCompanies = queryClient.getQueryData([QUERY_KEYS.COMPANIES])
+        return allCompanies?.find((company) => String(company.id) === String(id))
+      },
+    })
+  }
+
   return {
     // Query state
     companies: companiesQuery.data,
@@ -39,5 +51,8 @@ export function useCompanies() {
     // Add company
     addCompany: addCompanyMutation.mutate,
     isAddingCompany: addCompanyMutation.isPending,
+
+    // Get company
+    useCompanyById,
   }
 }

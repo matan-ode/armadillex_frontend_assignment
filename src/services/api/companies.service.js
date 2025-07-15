@@ -3,6 +3,7 @@ import { getRandomBoolean, makeId } from '../util.service'
 export const companiesService = {
   getCompanies,
   addCompany,
+  getCompany,
 }
 
 async function getCompanies() {
@@ -14,8 +15,20 @@ async function getCompanies() {
   })
 }
 
-function addCompany(newCompanyData) {
+async function getCompany(companyId) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const foundCompany = demoCompanies.find((company) => company.company_id === companyId)
+      if (foundCompany) {
+        resolve(_refactorCompanies([foundCompany])[0])
+      } else {
+        resolve(null)
+      }
+    }, 500)
+  })
+}
 
+function addCompany(newCompanyData) {
   return new Promise((resolve) => {
     setTimeout(() => {
       const rawNewCompany = {
