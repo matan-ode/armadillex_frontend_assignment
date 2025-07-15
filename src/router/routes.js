@@ -13,6 +13,11 @@ const routes = [
         name: ROUTES.COMPANY,
         component: () => import('src/pages/company/CompanyIndex.vue'),
       },
+      {
+        path: ROUTES.COMPANY_DETAILS_PATH,
+        name: ROUTES.COMPANY_DETAILS_NAME,
+        component: () => import('src/pages/company/CompanyDetails.vue'),
+      },
     ],
   },
 
