@@ -1,8 +1,8 @@
 <template>
 
   <div class="q-pa-md">
-    <q-table class="table-company-list" @row-click="onRowClick" flat bordered title="Companies" :rows="companies" :columns="columns" row-key="id"
-      :filter="filter" :loading="isLoading || isAddingCompany">
+    <q-table class="table-company-list" @row-click="onRowClick" flat bordered title="Companies" :rows="companies"
+      :columns="columns" row-key="id" :filter="filter" :loading="isLoading || isAddingCompany">
       <template v-slot:top>
         <q-btn label="Add a Company" color="primary" @click="prompt = true" />
         <q-space />
@@ -71,8 +71,10 @@ import { ref, onBeforeUnmount, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { getRandomIntInclusive } from 'src/services/util.service'
 import { useCompanies } from 'src/composables/useCompanies'
+import { useRouter } from 'vue-router'
+import { ROUTES } from 'src/router/const'
 
-
+const router = useRouter()
 
 const { companies, isLoading, error, addCompany, isAddingCompany } = useCompanies()
 
@@ -146,9 +148,7 @@ const $q = useQuasar()
 let timer
 
 function onRowClick(ev, row) {
-
-  console.log('clicked on row', row, ev);
-
+  router.push(`/${ROUTES.COMPANY}/${row.id}`)
 }
 
 onBeforeUnmount(() => {
@@ -233,6 +233,4 @@ function retryRadioDialog() {
 
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
