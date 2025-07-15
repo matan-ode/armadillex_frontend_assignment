@@ -1,80 +1,7 @@
+import { storageService } from '../storage.service'
 import { getRandomBoolean, makeId } from '../util.service'
 
-export const companiesService = {
-  getCompanies,
-  addCompany,
-  getCompany,
-}
-
-async function getCompanies() {
-  const companies = demoCompanies
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(_refactorCompanies(companies))
-    }, 1000)
-  })
-}
-
-async function getCompany(companyId) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const foundCompany = demoCompanies.find((company) => company.company_id === companyId)
-      if (foundCompany) {
-        resolve(_refactorCompanies([foundCompany])[0])
-      } else {
-        resolve(null)
-      }
-    }, 500)
-  })
-}
-
-function addCompany(newCompanyData) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const rawNewCompany = {
-        active: getRandomBoolean(),
-        company_id: makeId(12),
-        company_legal_name: newCompanyData.name,
-        company_name: newCompanyData.name,
-        country: 'USA',
-        date_added: new Date().toUTCString(),
-        dpf_found: getRandomBoolean(),
-        parent_id: makeId(12),
-        provides_ai_services: getRandomBoolean(),
-      }
-
-      demoCompanies.unshift(rawNewCompany)
-
-      resolve(_refactorCompanies([rawNewCompany])[0])
-    }, 700)
-  })
-}
-
-function _refactorCompanies(companies) {
-  return companies.map((company) => ({
-    id: company.company_id,
-    active: company.active,
-    name: company.company_name,
-    legalName: company.company_legal_name,
-    country: company.country,
-    dateAdded: company.date_added,
-    isDpfFound: company.dpf_found,
-    parentId: company.parent_id,
-    providesAiServices: company.provides_ai_services,
-  }))
-}
-
-// Raw company data
-// "active": true,
-// "company_id": "pAuC6RQ71bBG",
-// "company_legal_name": "Market Data Insights LLC",
-// "company_name": "Market Data Insights LLC",
-// "country": "USA",
-// "date_added": "Sun, 26 Jan 2025 16:54:36 GMT",
-// "dpf_found": false,
-// "parent_id": "hDQkIp9PldZO",
-// "provides_ai_services": true
-
+const COMPANIES_KEY = 'companiesDB'
 var demoCompanies = [
   {
     active: true,
@@ -308,3 +235,100 @@ var demoCompanies = [
     provides_ai_services: true,
   },
 ]
+
+initialData()
+
+function initialData() {
+  if (!storageService.get(COMPANIES_KEY)) {
+    storageService.set(COMPANIES_KEY, demoCompanies)
+  }
+}
+
+export const companiesService = {
+  getCompanies,
+  addCompany,
+  getCompany,
+}
+
+async function getCompanies() {
+  let companies = storageService.get(COMPANIES_KEY)
+  if (!companies) {
+    companies = demoCompanies
+  }
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(_refactorCompanies(companies))
+    }, 1000)
+  })
+}
+
+async function getCompany(companyId) {
+  let companies = storageService.get(COMPANIES_KEY)
+  if (!companies) {
+    companies = demoCompanies
+  }
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const foundCompany = companies.find((company) => company.company_id === companyId)
+      if (foundCompany) {
+        resolve(_refactorCompanies([foundCompany])[0])
+      } else {
+        resolve(null)
+      }
+    }, 500)
+  })
+}
+
+function addCompany(newCompanyData) {
+  let companies = storageService.get(COMPANIES_KEY)
+  if (!companies) {
+    companies = demoCompanies
+  }
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const rawNewCompany = {
+        active: getRandomBoolean(),
+        company_id: `${makeId(12)}`,
+        company_legal_name: newCompanyData.name,
+        company_name: newCompanyData.name,
+        country: 'USA',
+        date_added: new Date().toUTCString(),
+        dpf_found: getRandomBoolean(),
+        parent_id: makeId(12),
+        provides_ai_services: getRandomBoolean(),
+      }
+
+      companies.unshift(rawNewCompany)
+      storageService.set(COMPANIES_KEY, companies)
+
+      resolve(_refactorCompanies([rawNewCompany])[0])
+    }, 700)
+  })
+}
+
+function _refactorCompanies(companies) {
+  return companies.map((company) => ({
+    id: company.company_id,
+    active: company.active,
+    name: company.company_name,
+    legalName: company.company_legal_name,
+    country: company.country,
+    dateAdded: company.date_added,
+    isDpfFound: company.dpf_found,
+    parentId: company.parent_id,
+    providesAiServices: company.provides_ai_services,
+  }))
+}
+
+// Raw company data
+// "active": true,
+// "company_id": "pAuC6RQ71bBG",
+// "company_legal_name": "Market Data Insights LLC",
+// "company_name": "Market Data Insights LLC",
+// "country": "USA",
+// "date_added": "Sun, 26 Jan 2025 16:54:36 GMT",
+// "dpf_found": false,
+// "parent_id": "hDQkIp9PldZO",
+// "provides_ai_services": true

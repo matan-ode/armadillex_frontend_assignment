@@ -10,7 +10,7 @@
       <strong>Address</strong>: {{ companyDetails.country }} <br>
       <strong>Active</strong>: {{ companyDetails.active ? 'Yes' : 'No' }} <br>
       <strong>Date Added:</strong> {{ companyDetails.dateAdded }} <br>
-      <strong>AI Services:</strong> {{ companyDetails.providesAiServices ? 'Yes' : 'לא' }}
+      <strong>AI Services:</strong> {{ companyDetails.providesAiServices ? 'Yes' : 'No' }}
     </p>
     <p v-else-if="!isLoadingCompany && !errorCompany && companyDetails === null">ID: {{ companyId }} Not Found</p>
     <p v-else>Loading...</p>

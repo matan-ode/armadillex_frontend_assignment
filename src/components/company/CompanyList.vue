@@ -88,7 +88,7 @@ async function onAddCompany(companyName) {
 
     }
 
-    await addCompany(newCompanyData)
+    addCompany(newCompanyData)
 
     $q.notify({
       type: 'positive',
