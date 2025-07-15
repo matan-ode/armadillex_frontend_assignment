@@ -132,7 +132,6 @@ const columns = [
   { name: 'legalName', align: 'center', label: 'Legal Name', field: 'legalName', sortable: true }
 ]
 
-
 const isLoadingAI = ref(false)
 const filter = ref('')
 const prompt = ref(false)
@@ -151,16 +150,8 @@ function onRowClick(ev, row) {
   router.push(`/${ROUTES.COMPANY}/${row.id}`)
 }
 
-onBeforeUnmount(() => {
-  // void 0 similar to undefined
-  if (timer !== void 0) {
-    clearTimeout(timer)
-    $q.loading.hide()
-  }
-})
-
 watch(isLoading, (newVal, oldVal) => {
-  if (!newVal && oldVal) { // Finished loading
+  if (!newVal && oldVal) { // Finished loading (OLD true, NEW false)
     if (error.value) {
       $q.notify({
         type: 'negative',
@@ -183,6 +174,7 @@ function aiGenerateNames() {
   prompt.value = false
   makeAiSuggestions(aiNameInput.value)
 
+  filter.value = ''
   showLoading()
 
   timer = setTimeout(() => {
@@ -200,6 +192,14 @@ function showLoading() {
     spinnerColor: 'primary'
   })
 }
+
+onBeforeUnmount(() => {
+  // void 0 similar to undefined
+  if (timer !== void 0) {
+    clearTimeout(timer)
+    $q.loading.hide()
+  }
+})
 
 function makeAiSuggestions(name) {
   const nameEndings = ['Solutions', 'Group', 'International', 'Corp', 'Inc', 'LLC', 'Partners', 'Holdings', '& Son', '& Co', 'Ltd.', 'Brands']
@@ -229,7 +229,6 @@ function retryRadioDialog() {
   radioDialogVisible.value = false
   aiGenerateNames()
 }
-
 
 </script>
 
