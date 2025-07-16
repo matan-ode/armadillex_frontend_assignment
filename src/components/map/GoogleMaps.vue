@@ -14,12 +14,8 @@ const props = defineProps({
   country: String,
 })
 
-console.log(props.country);
-
-
 const countryLat = ref(countriesCodeMap[props.country].center[0])
 const countryLng = ref(countriesCodeMap[props.country].center[1])
-
 
 const center = ref({ lat: (countryLat.value? countryLat:40.689247), lng: countryLng.value? countryLng: -74.044502 })
 

@@ -2,8 +2,8 @@
   <div class="q-pa-md company-list-card">
 
     <!-- Table of grid -->
-    <q-table class="table-company-list" v-if="props.isGridDisplay" grid hide-header @row-click="onRowClick" flat bordered
-      title="Companies" :rows="companies" :columns="columns" row-key="id" :filter="filter"
+    <q-table class="table-company-list" v-if="props.isGridDisplay" grid hide-header @row-click="onRowClick" flat
+      bordered title="Companies" :rows="companies" :columns="columns" row-key="id" :filter="filter"
       :loading="isLoading || isAddingCompany">
       <template v-slot:top>
         <q-btn label="Add a Company" color="primary" @click="prompt = true" />
@@ -113,8 +113,6 @@ const props = defineProps({
   }
 })
 
-
-
 async function onAddCompany(companyName) {
 
   try {
@@ -173,7 +171,6 @@ const columns = [
 //   return row + 'Modify data here and return '
 // }
 
-
 const isLoadingAI = ref(false)
 const filter = ref('')
 const prompt = ref(false)
@@ -183,7 +180,6 @@ const aiSuggestions = ref([])
 
 const radioDialogVisible = ref(false)
 const selectedOption = ref(null)
-
 
 const $q = useQuasar()
 let timer
@@ -209,7 +205,6 @@ watch(isLoading, (newVal, oldVal) => {
     }
   }
 }, { immediate: true })
-
 
 function aiGenerateNames() {
   isLoadingAI.value = true
@@ -275,9 +270,6 @@ function retryRadioDialog() {
 </script>
 
 <style scoped lang="scss">
-// .q-table__middle{
-//     overflow-x: auto !important;
-//   }
 .company-list-card {
   padding-bottom: 0;
 }

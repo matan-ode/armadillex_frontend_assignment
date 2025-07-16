@@ -47,6 +47,7 @@ h1 {
   font-size: 2em;
   text-align: center;
   align-self: center;
+  font-weight: bold;
 }
 
 img {
