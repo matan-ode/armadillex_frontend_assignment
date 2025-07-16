@@ -39,6 +39,9 @@
         <q-btn label="Back" color="primary" @click="goBack" class="q-mt-md" />
       </q-card-section>
     </div>
+    <div>
+      <GoogleMaps />
+    </div>
   </q-card>
 </template>
 
@@ -48,6 +51,8 @@ import { useRoute, useRouter } from 'vue-router'
 import { QBtn } from 'quasar'
 import { useCompanies } from 'src/composables/useCompanies'
 import { countriesCodeMap } from 'src/assets/jsons/countries'
+import GoogleMaps from 'src/components/map/GoogleMaps.vue'
+
 
 const route = useRoute()
 const router = useRouter()
