@@ -2,6 +2,20 @@
   <div class="q-pa-md company-list-card">
     <q-table class="table-company-list" @row-click="onRowClick" flat bordered title="Companies" :rows="companies"
       :columns="columns" row-key="id" :filter="filter" :loading="isLoading || isAddingCompany">
+
+      <template v-slot:body-cell-name="props">
+        <q-td :props="props">
+          <div>
+            <q-badge color="primary" :label="props.value">
+              <!-- <q-tooltip>
+                {{ getTooltip(props.value) }}
+              </q-tooltip> -->
+            </q-badge>
+
+          </div>
+        </q-td>
+      </template>
+
       <template v-slot:top>
         <q-btn label="Add a Company" color="primary" @click="prompt = true" />
         <q-space />
@@ -130,6 +144,11 @@ const columns = [
   { name: 'parentId', align: 'center', label: 'Parent ID', field: row => row.parentId ? row.parentId : 'None' },
   { name: 'legalName', align: 'center', label: 'Legal Name', field: 'legalName', sortable: true }
 ]
+
+// function getTooltip(row) {
+//   return row + 'Modify data here and return '
+// }
+
 
 const isLoadingAI = ref(false)
 const filter = ref('')

@@ -3,7 +3,8 @@
     <div class="q-pa-md">
       <q-card-section>
         <h3 v-if="companyDetails">Company Info - {{ companyDetails.name }}</h3>
-        <img class="ai-logo" v-if="companyDetails.providesAiServices" src="../../assets/icons/ai-logo2.avif" alt="">
+        <img title="Provides AI Services" class="ai-logo" v-if="companyDetails.providesAiServices"
+          src="../../assets/icons/ai-logo2.avif" alt="">
       </q-card-section>
 
       <q-card-section>
@@ -96,29 +97,11 @@ function getFlagCode(country) {
 </script>
 
 <style lang="scss" scoped>
-.ai-logo {
-  position: absolute;
-  width: 2.5em;
-  height: 2.5em;
-
-
-  top: -14px;
-  right: -14px;
-  border-radius: 50%;
-  opacity: 90%;
-}
-
-.text-red {
-  color: red
-}
-
-.text-green {
-  color: green
-}
-
 h3 {
-  font-size: 2.5em;
+  font-size: 2.4em;
   text-align: center;
+
+  font-weight: bold;
 }
 
 .info-company {
@@ -141,8 +124,10 @@ h3 {
     }
 
     >* {
+      padding: 0 0.3em;
+
       &:hover {
-        opacity: 90%;
+        opacity: 85%;
       }
     }
 
@@ -162,5 +147,30 @@ h3 {
       width: 100%;
     }
   }
+}
+
+.ai-logo {
+  position: absolute;
+  width: 2.5em;
+  height: 2.5em;
+
+  top: -14px;
+  right: -14px;
+  border-radius: 50%;
+  opacity: 90%;
+
+  transition: 550ms;
+
+  &:hover {
+    opacity: 60%;
+  }
+}
+
+.text-red {
+  color: red
+}
+
+.text-green {
+  color: green
 }
 </style>
