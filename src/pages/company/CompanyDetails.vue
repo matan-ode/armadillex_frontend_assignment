@@ -14,7 +14,7 @@
           <section class="left-side-details">
             <div>ID:</div>
             <div>{{ companyId }}</div>
-            <div>Company Name:</div>
+            <div>Name:</div>
             <div>{{ companyDetails.name }}</div>
             <div>Address:</div>
             <div>{{ companyDetails.country }}</div>
