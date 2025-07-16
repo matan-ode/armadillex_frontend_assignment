@@ -17,7 +17,7 @@
             <div>Name:</div>
             <div>{{ companyDetails.name }}</div>
             <div>Address:</div>
-            <div>{{ companyDetails.country }}</div>
+            <div>{{ countriesCodeMap[companyDetails.country].countryName }}</div>
             <div>Active:</div>
             <div :class="companyDetails.active ? 'text-green' : 'text-red'">{{ companyDetails.active ? 'Yes' : 'No' }}
             </div>

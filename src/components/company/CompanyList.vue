@@ -37,7 +37,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="aiNameInput" autofocus @keyup.enter="aiGenerateNames" />
+          <q-input class="input" dense v-model="aiNameInput" autofocus @keyup.enter="aiGenerateNames" />
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
