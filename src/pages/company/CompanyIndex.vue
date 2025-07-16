@@ -1,6 +1,6 @@
 <template>
   <q-card>
-    <q-card-section>
+    <q-card-section class="q-pb-none">
       <h1>Companies</h1>
     </q-card-section>
     <q-card-section class="company-list">
@@ -29,7 +29,7 @@ const { companies } = useCompanies()
 
 <style lang="scss" scoped>
 h1 {
-  font-size: 3em;
+  font-size: 2em;
 }
 
 .company-list {

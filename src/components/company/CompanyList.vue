@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-md company-list-card">
     <q-table class="table-company-list" @row-click="onRowClick" flat bordered title="Companies" :rows="companies"
       :columns="columns" row-key="id" :filter="filter" :loading="isLoading || isAddingCompany">
       <template v-slot:top>
@@ -231,4 +231,8 @@ function retryRadioDialog() {
 
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.company-list-card {
+  padding-bottom: 0;
+}
+</style>

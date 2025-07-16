@@ -2,25 +2,33 @@
   <q-card>
     <div class="q-pa-md">
       <q-card-section>
-        <h3>Company Info</h3>
+        <h3 v-if="companyDetails">Company Info - {{ companyDetails.name }}</h3>
       </q-card-section>
 
       <q-card-section>
         <p v-if="isLoadingCompany">Loading...</p>
         <p v-else-if="errorCompany">Error: {{ errorCompany.message }}</p>
         <div v-else-if="companyDetails" class="info-company">
-          <div>ID:</div>
-          <div>{{ companyId }}</div>
-          <div>Company Name:</div>
-          <div>{{ companyDetails.name }}</div>
-          <div>Address:</div>
-          <div>{{ companyDetails.country }}</div>
-          <div>Active:</div>
-          <div>{{ companyDetails.active ? 'Yes' : 'No' }}</div>
-          <div>Date Added:</div>
-          <div>{{ companyDetails.dateAdded }}</div>
-          <div>AI Services:</div>
-          <div>{{ companyDetails.providesAiServices ? 'Yes' : 'No' }}</div>
+          <section class="left-side-details">
+            <div>ID:</div>
+            <div>{{ companyId }}</div>
+            <div>Company Name:</div>
+            <div>{{ companyDetails.name }}</div>
+            <div>Address:</div>
+            <div>{{ companyDetails.country }}</div>
+            <div>Active:</div>
+            <div :class="companyDetails.active ? 'text-green' : 'text-red'">{{ companyDetails.active ? 'Yes' : 'No' }}
+            </div>
+            <div>Date Added:</div>
+            <div>{{ companyDetails.dateAdded }}</div>
+            <div>AI Services:</div>
+            <div :class="companyDetails.providesAiServices ? 'text-green' : 'text-red'">{{
+              companyDetails.providesAiServices ? 'Yes' : 'No' }}</div>
+          </section>
+          <section class="right-side-details">
+            <img class="flag-img"
+              :src="`https://flagicons.lipis.dev/flags/4x3/${getFlagCode(companyDetails.country)}.svg`">
+          </section>
         </div>
         <p v-else-if="!isLoadingCompany && !errorCompany && companyDetails === null">ID: {{ companyId }} Not Found</p>
         <p v-else>Loading...</p>
@@ -37,6 +45,7 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { QBtn } from 'quasar'
 import { useCompanies } from 'src/composables/useCompanies'
+import { countriesCodeMap } from 'src/assets/jsons/countries'
 
 const route = useRoute()
 const router = useRouter()
@@ -55,7 +64,6 @@ const companyId = computed(() => route.params.id)
 //   'AI Services'
 // ]
 
-
 const { useCompanyById } = useCompanies()
 
 const {
@@ -66,6 +74,10 @@ const {
 
 function goBack() {
   router.back()
+}
+
+function getFlagCode(country) {
+  return countriesCodeMap[country].alpha2Code.toLowerCase()
 }
 
 // watch(companyDetails, (newVal) => {
@@ -83,28 +95,60 @@ function goBack() {
 </script>
 
 <style lang="scss" scoped>
+.text-red {
+  color: red
+}
+
+.text-green {
+  color: green
+}
+
+h3 {
+  font-size: 2.5em;
+  text-align: center;
+}
+
 .info-company {
-  // justify-self: center;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  justify-content: space-around;
+  gap: 2em;
 
-  font-size: 1.2em;
 
-  max-width: fit-content;
+  .left-side-details {
+    // justify-self: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 
-  :nth-last-of-type(even) {
-    font-weight: bold;
+    font-size: 1.2em;
+
+    max-width: fit-content;
+
+    :nth-last-of-type(even) {
+      font-weight: bold;
+    }
+
+    >* {
+      &:hover {
+        opacity: 90%;
+      }
+    }
+
   }
 
-  >* {
-    &:hover {
-      opacity: 90%;
+  .right-side-details {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    // justify-items: center;
+    // justify-self: center;
+    // align-items: center;
+    // align-self: center;
+    // align-content: center;
+
+    img {
+      width: 100%;
     }
   }
-
-
-
-
 
 }
 </style>

@@ -2,6 +2,7 @@ import { storageService } from '../storage.service'
 import { getRandomBoolean, makeId } from '../util.service'
 
 const COMPANIES_KEY = 'companiesDB'
+
 var demoCompanies = [
   {
     active: true,
