@@ -39,8 +39,8 @@
         <q-btn label="Back" color="primary" @click="goBack" class="q-mt-md" />
       </q-card-section>
     </div>
-    <div>
-      <GoogleMaps />
+    <div v-if="companyDetails">
+      <GoogleMaps :country="companyDetails.country" />
     </div>
   </q-card>
 </template>

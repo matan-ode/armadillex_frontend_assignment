@@ -1,5 +1,6 @@
+import { allAlpha3CountryCodes } from 'src/assets/jsons/countries'
 import { storageService } from '../storage.service'
-import { getRandomBoolean, makeId } from '../util.service'
+import { getRandomBoolean, getRandomIntInclusive, makeId } from '../util.service'
 
 const COMPANIES_KEY = 'companiesDB'
 
@@ -294,7 +295,7 @@ function addCompany(newCompanyData) {
         company_id: `${makeId(12)}`,
         company_legal_name: newCompanyData.name,
         company_name: newCompanyData.name,
-        country: 'USA',
+        country: allAlpha3CountryCodes[getRandomIntInclusive(0, 194)],
         date_added: new Date().toUTCString(),
         dpf_found: getRandomBoolean(),
         parent_id: makeId(12),
