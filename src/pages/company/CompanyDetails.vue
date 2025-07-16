@@ -1,8 +1,8 @@
 <template>
   <q-card>
     <div class="q-pa-md">
-      <q-card-section>
-        <h3 v-if="companyDetails">Company Info - {{ companyDetails.name }}</h3>
+      <q-card-section v-if="companyDetails">
+        <h3>Company Info - {{ companyDetails.name }}</h3>
         <img title="Provides AI Services" class="ai-logo" v-if="companyDetails.providesAiServices"
           src="../../assets/icons/ai-logo2.avif" alt="">
       </q-card-section>
