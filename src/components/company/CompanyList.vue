@@ -1,8 +1,24 @@
 <template>
   <div class="q-pa-md company-list-card">
-    <q-table class="table-company-list" @row-click="onRowClick" flat bordered title="Companies" :rows="companies"
-      :columns="columns" row-key="id" :filter="filter" :loading="isLoading || isAddingCompany">
 
+    <!-- Table of grid -->
+    <q-table class="table-company-list" v-if="props.isGridDisplay" grid hide-header @row-click="onRowClick" flat bordered
+      title="Companies" :rows="companies" :columns="columns" row-key="id" :filter="filter"
+      :loading="isLoading || isAddingCompany">
+      <template v-slot:top>
+        <q-btn label="Add a Company" color="primary" @click="prompt = true" />
+        <q-space />
+        <q-input borderless dense debounce="300" color="primary" placeholder="Search" v-model="filter">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
+    </q-table>
+
+    <!-- Table of rows -->
+    <q-table class="table-company-list" v-else @row-click="onRowClick" flat bordered title="Companies" :rows="companies"
+      :columns="columns" row-key="id" :filter="filter" :loading="isLoading || isAddingCompany">
       <template v-slot:body-cell-name="props">
         <q-td :props="props">
           <div>
@@ -11,7 +27,6 @@
                 {{ getTooltip(props.value) }}
               </q-tooltip> -->
             </q-badge>
-
           </div>
         </q-td>
       </template>
@@ -90,6 +105,15 @@ import { ROUTES } from 'src/router/const'
 const router = useRouter()
 
 const { companies, isLoading, error, addCompany, isAddingCompany } = useCompanies()
+
+const props = defineProps({
+  isGridDisplay: {
+    type: Boolean,
+    required: true,
+  }
+})
+
+
 
 async function onAddCompany(companyName) {
 
@@ -251,6 +275,9 @@ function retryRadioDialog() {
 </script>
 
 <style scoped lang="scss">
+// .q-table__middle{
+//     overflow-x: auto !important;
+//   }
 .company-list-card {
   padding-bottom: 0;
 }

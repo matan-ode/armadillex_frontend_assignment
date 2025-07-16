@@ -1,10 +1,19 @@
 <template>
   <q-card>
-    <q-card-section class="q-pb-none">
+    <q-card-section class="q-pb-none flex space-between">
       <h1>Companies</h1>
+      <q-btn padding="none" color="none" flat @click="toggleTableDisplay">
+        <q-avatar v-if="isGridDisplay">
+          <img src="../../assets/icons/table-icon.svg">
+        </q-avatar>
+        <q-avatar v-else>
+          <img src="../../assets/icons/grid-icon.svg">
+        </q-avatar>
+      </q-btn>
+
     </q-card-section>
     <q-card-section class="company-list">
-      <CompanyList v-if="companies" />
+      <CompanyList :isGridDisplay="isGridDisplay" v-if="companies" />
       <div class="loading" v-else><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150">
           <path fill="none" stroke="#002644" stroke-width="15" stroke-linecap="round" stroke-dasharray="300 385"
             stroke-dashoffset="0"
@@ -21,15 +30,27 @@
 
 import CompanyList from 'src/components/company/CompanyList.vue';
 import { useCompanies } from 'src/composables/useCompanies'
+import { ref } from 'vue';
 
 const { companies } = useCompanies()
 
+const isGridDisplay = ref(false)
+
+function toggleTableDisplay() {
+  isGridDisplay.value = !isGridDisplay.value
+}
 
 </script>
 
 <style lang="scss" scoped>
 h1 {
   font-size: 2em;
+  text-align: center;
+  align-self: center;
+}
+
+img {
+  max-width: 30px;
 }
 
 .company-list {
