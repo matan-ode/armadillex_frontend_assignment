@@ -128,7 +128,7 @@ h3 {
     flex-direction: column;
 
     img {
-      width: 60%;
+      width: 50%;
     }
   }
 }
