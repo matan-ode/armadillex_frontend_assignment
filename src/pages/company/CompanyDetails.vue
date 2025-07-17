@@ -126,15 +126,9 @@ h3 {
   .right-side-details {
     display: flex;
     flex-direction: column;
-    // justify-content: center;
-    // justify-items: center;
-    // justify-self: center;
-    // align-items: center;
-    // align-self: center;
-    // align-content: center;
 
     img {
-      width: 100%;
+      width: 60%;
     }
   }
 }
