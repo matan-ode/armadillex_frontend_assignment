@@ -4,7 +4,7 @@
     <!-- Table of grid -->
     <q-table class="table-company-list" v-if="props.isGridDisplay" grid hide-header @row-click="onRowClick" flat
       bordered title="Companies" :rows="companies" :columns="columns" row-key="id" :filter="filter"
-      :loading="isLoading || isAddingCompany">
+      :pagination="initialPagination" :loading="isLoading || isAddingCompany">
       <template v-slot:top>
         <q-btn label="Add a Company" color="primary" @click="prompt = true" />
         <q-space />
@@ -147,6 +147,11 @@ async function onAddCompany(companyName) {
     });
   }
 }
+
+const initialPagination = ref({
+  rowsPerPage: 6
+  // rowsNumber: xx if getting data from a server
+})
 
 const columns = [
   { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: false },
