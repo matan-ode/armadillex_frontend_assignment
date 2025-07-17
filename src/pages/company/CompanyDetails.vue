@@ -104,6 +104,7 @@ h3 {
     // justify-self: center;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
+    align-items: center;
 
     font-size: 1.2em;
 
@@ -129,6 +130,7 @@ h3 {
 
     img {
       width: 50%;
+      border-radius: 8px;
     }
   }
 }

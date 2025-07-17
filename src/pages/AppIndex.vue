@@ -3,7 +3,7 @@
     <app-header />
 
     <q-page-container class="page-container" style="padding-top: 0">
-      <q-page class="q-pa-md">
+      <q-page class="q-pt-md q-pr-md q-pl-md q-pb-sm">
         <router-view />
       </q-page>
     </q-page-container>

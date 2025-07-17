@@ -1,10 +1,10 @@
 <template>
-  <div class="q-pa-md company-list-card">
+  <div class="q-pa-sm company-list-card">
 
     <!-- Table of grid -->
     <q-table class="table-company-list" v-if="props.isGridDisplay" grid hide-header @row-click="onRowClick" flat
       bordered title="Companies" :rows="companies" :columns="columns" row-key="id" :filter="filter"
-      :pagination="initialPagination" :loading="isLoading || isAddingCompany">
+      :pagination="initialPaginationGrid" :loading="isLoading || isAddingCompany">
       <template v-slot:top>
         <q-btn label="Add a Company" color="primary" @click="prompt = true" />
         <q-space />
@@ -18,7 +18,8 @@
 
     <!-- Table of rows -->
     <q-table class="table-company-list" v-else @row-click="onRowClick" flat bordered title="Companies" :rows="companies"
-      :columns="columns" row-key="id" :filter="filter" :loading="isLoading || isAddingCompany">
+      :columns="columns" row-key="id" :filter="filter" :loading="isLoading || isAddingCompany"
+      :pagination="initialPagination">
       <template v-slot:body-cell-name="props">
         <q-td :props="props">
           <div>
@@ -148,10 +149,16 @@ async function onAddCompany(companyName) {
   }
 }
 
-const initialPagination = ref({
+const initialPaginationGrid = ref({
   rowsPerPage: 6
   // rowsNumber: xx if getting data from a server
 })
+const initialPagination = ref({
+  rowsPerPage: 7
+  // rowsNumber: xx if getting data from a server
+})
+
+
 
 const columns = [
   { name: 'id', align: 'left', label: 'ID', field: 'id', sortable: false },
@@ -161,7 +168,8 @@ const columns = [
     label: 'Name',
     align: 'left',
     field: row => row.name,
-    sortable: true
+    sortable: true,
+
   },
   { name: 'active', align: 'center', label: 'Is Active', field: row => row.active ? 'Yes' : 'No', sortable: true },
   { name: 'country', align: 'center', label: 'Country', field: 'country', sortable: true },
